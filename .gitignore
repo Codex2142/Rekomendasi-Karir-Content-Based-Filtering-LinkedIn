@@ -1,12 +1,20 @@
-# Dataset hasil olahan
-dataset/cooked/*
-
-# Model & artefak ML
-*.pkl
-*.joblib
+# Python
+__pycache__/
+*.pyc
 
 # Jupyter
 .ipynb_checkpoints/
 
-# Python
-__pycache__/
+# Data besar
+dataset/cooked/
+*.pkl
+*.joblib
+*.h5
+*.pt
+
+# OS
+.DS_Store
+Thumbs.db
+
+# venv
+recommender/
