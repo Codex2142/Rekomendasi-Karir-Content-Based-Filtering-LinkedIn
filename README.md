@@ -123,17 +123,17 @@ Rekomendasi Top-N
 
 ### 5.1 Struktur Folder
 ```sh
-project_recommendation/
+Tubes/
 │
 ├── dataset/
-│   └── linkedin_jobs.csv
-│
-├── cooked/
-│   ├── cleaned_data.csv
-│   ├── tfidf_vectorizer.pkl
-│   ├── tfidf_matrix.pkl
-│   ├── numeric_features.pkl
-│   └── similarity_matrix.pkl
+│   ├── raw/
+│   │   └── dump.csv
+│   └── cooked/
+│       ├── cleaned_data.csv
+│       ├── tfidf_vectorizer.pkl
+│       ├── tfidf_matrix.pkl
+│       ├── numeric_features.pkl
+│       └── similarity_matrix.pkl
 │
 ├── notebooks/
 │   ├── 01_data_understanding.ipynb
@@ -143,8 +143,20 @@ project_recommendation/
 │   ├── 05_recommendation_engine.ipynb
 │   └── 06_evaluation_analysis.ipynb
 │
+├── web/
+│   ├── app.py
+│   ├── recommender.py
+│   ├── templates/
+│   │   ├── index.html
+│   │   ├── result.html
+│   │   └── detail.html
+│   └── static/
+│       ├── css/
+│       │   └── style.css
+│       └── js/
+│           └── main.js
+│
 └── README.md
-
 ```
 
 
@@ -247,3 +259,138 @@ Yang dilakukan:
     Studi kasus manual
 
     Diskusi kekuatan & keterbatasan sistem
+
+# 7. Implementasi Website
+Arsitektur Website
+```sh
+User (Browser)
+   ↓
+Flask Web UI
+   ↓
+Recommendation Engine (pickle model)
+   ↓
+Similarity Matrix
+   ↓
+Top-N Job Recommendation
+
+```
+
+### 7.1. Alur Kerja Website
+1. User membuka halaman utama
+
+2. User memilih atau mengisi profil
+
+3. Flask memanggil engine rekomendasi
+
+4. Sistem menghitung Top-N rekomendasi
+
+5. Hasil ditampilkan di website
+
+
+### 7.2. input pengguna  ```index.html```
+Tujuan: Input data profil
+
+Isi halaman:
+
+- Dropdown / Input:
+
+    - Job title saat ini
+
+    - Lokasi
+
+    - Negara
+
+Estimasi umur
+
+- Slider:
+
+    - Jumlah koneksi
+
+- Tombol:
+
+    - “Cari Rekomendasi”
+
+📌 Catatan:  
+Tidak perlu semua fitur LinkedIn dimunculkan, cukup representatif.
+
+
+### 7.3. Halaman Hasil rekomendasi ```result.html```
+Tujuan: Menampilkan rekomendasi
+
+Isi halaman:
+
+- Daftar Top-5 / Top-10 pekerjaan
+
+- Setiap rekomendasi menampilkan:
+
+    - Job Title
+
+    - Company Name
+
+    - Location
+
+    - Similarity Score (%)
+
+- Tombol:
+
+    - “Lihat Detail”
+
+
+### 7.4. Halaman Detail ```detail.html```
+Tujuan: Penjelasan kenapa direkomendasikan
+
+Isi halaman:
+
+- Profil input user
+
+- Pekerjaan yang direkomendasikan
+
+- Faktor kemiripan:
+
+    - Judul pekerjaan
+
+    - Lokasi
+
+    - Perusahaan
+
+    - Durasi posisi
+
+### 7.5. Peran File Flask
+```app.py```  
+1. Routing Flask
+
+2. Handling form input
+
+3. Rendering HTML
+
+```recommender.py```  
+1. Load ```pkl```
+2. Menjalankan  
+```py
+def recommend(user_input, top_n=5):
+    ...
+```
+
+### 7.6. Integrasi File Model ke Flask (Alur Teknis)
+
+1. Load file:
+
+    - cleaned_data.csv
+
+    - tfidf_vectorizer.pkl
+
+    - tfidf_matrix.pkl
+
+    - similarity_matrix.pkl
+
+2. User input → vectorisasi:
+
+    - TF-IDF untuk teks
+
+    - Scaling numerik (jika digunakan)
+
+3. Hitung similarity:
+
+    - Cosine similarity user vs dataset
+
+4. Ambil Top-N hasil
