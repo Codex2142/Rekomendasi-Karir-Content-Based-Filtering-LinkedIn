@@ -1,0 +1,12 @@
+# Dataset hasil olahan
+dataset/cooked/*
+
+# Model & artefak ML
+*.pkl
+*.joblib
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Python
+__pycache__/
