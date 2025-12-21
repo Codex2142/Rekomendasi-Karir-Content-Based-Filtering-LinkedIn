@@ -263,15 +263,6 @@ Yang dilakukan:
 # 7. Implementasi Website
 Arsitektur Website
 ```sh
-<<<<<<< HEAD
-1. preparation
-2. feature engineering
-3. similarity computation
-4. ranking
-5. implementasi final
-6. output
-```
-=======
 User (Browser)
    ↓
 Flask Web UI
@@ -403,4 +394,3 @@ def recommend(user_input, top_n=5):
     - Cosine similarity user vs dataset
 
 4. Ambil Top-N hasil
->>>>>>> 56ecddf26f957ec932f7456e4b2cc2e6e9111815
