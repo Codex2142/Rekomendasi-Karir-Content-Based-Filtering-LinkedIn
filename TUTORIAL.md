@@ -41,19 +41,15 @@ pip install -r requirements.txt
 
 ## 5. jalankan ```app.py```
 ```sh
-python run.py
+cd collab
+```  
+
+lalu anda akan diarahkan ke direktori ```collab``` dan ada file bernama ```app.py``` jalankan kode dibawah ini
+```sh
+uvicorn app:app --reload
 ```
+
 kemudian akses link yang telah diberikan terminal
 ```sh
 http://127.0.0.1:5000
-```
-
-# rangkuman
-```sh
-git clone https://github.com/Codex2142/Rekomendasi-Karir-Content-Based-Filtering-LinkedIn.git
-cd Tubes
-py -3.10 -m venv recommender
-.\recommender\Scripts\activate
-pip install -r requirements.txt
-python run.py
 ```

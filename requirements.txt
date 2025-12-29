@@ -122,3 +122,7 @@ webencodings==0.5.1
 websocket-client 
 Werkzeug==3.1.4
 win_inet_pton
+fastapi
+uvicorn
+jinja2
+python-multipart

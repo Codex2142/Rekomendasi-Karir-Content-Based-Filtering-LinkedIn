@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Career Recommendation</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/feather-icons"></script>
+</head>
+
+<body class="bg-gray-100 min-h-screen p-6">
+
+    <div class="max-w-4xl mx-auto">
+        <h1 class="text-3xl font-bold text-center text-gray-800 mb-6">Career Recommendation</h1>
+
+        <!-- Form -->
+        <div class="bg-white shadow-md rounded-lg p-6 mb-6">
+            <form id="recommendForm" class="space-y-4">
+                <div>
+                    <label class="block text-gray-700 font-medium">Keyword Karier:</label>
+                    <input type="text" id="keyword" required
+                        class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+
+                <div>
+                    <label class="block text-gray-700 font-medium">Pengalaman (bulan):</label>
+                    <input type="number" id="experience" required
+                        class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+
+                <div>
+                    <label class="block text-gray-700 font-medium">Jumlah Koneksi:</label>
+                    <input type="number" id="connections" required
+                        class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+
+                <button type="submit"
+                    class="w-full bg-blue-600 text-white font-bold py-2 rounded-md hover:bg-blue-700 transition">Dapatkan
+                    Rekomendasi</button>
+            </form>
+        </div>
+
+        <!-- Results -->
+        <div id="resultsContainer" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+    </div>
+
+    <script>
+        const form = document.getElementById('recommendForm');
+        const resultsContainer = document.getElementById('resultsContainer');
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const keyword = document.getElementById('keyword').value;
+            const experience = parseInt(document.getElementById('experience').value);
+            const connections = parseInt(document.getElementById('connections').value);
+
+            // request ke FastAPI
+            const response = await fetch('http://127.0.0.1:8000/recommend', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    keyword: keyword,
+                    experience_months: experience,
+                    connections: connections
+                })
+            });
+
+            const data = await response.json();
+
+            // kosongkan container
+            resultsContainer.innerHTML = '';
+
+            // tampilkan hasil dengan card
+            data.recommendations.forEach((item, index) => {
+                const card = document.createElement('div');
+                card.className = "bg-white p-4 rounded-lg shadow hover:shadow-lg transition relative";
+
+                card.innerHTML = `
+                    <div class="flex items-center space-x-3 mb-2">
+                        <i data-feather="briefcase" class="w-6 h-6 text-blue-500"></i>
+                        <h2 class="font-semibold text-lg text-gray-800">${item.career_step}</h2>
+                    </div>
+                    <p class="text-gray-600"><span class="font-medium">Start:</span> ${item.start_date}</p>
+                    <p class="text-gray-600"><span class="font-medium">End:</span> ${item.end_date}</p>
+                    <p class="mt-2 text-gray-700"><span class="font-medium">Score:</span> ${item.score}%</p>
+                `;
+
+                resultsContainer.appendChild(card);
+            });
+
+            // update feather icons
+            feather.replace();
+        });
+    </script>
+
+</body>
+
+</html>
